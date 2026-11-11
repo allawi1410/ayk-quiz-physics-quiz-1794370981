@@ -1,0 +1,997 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1428">
+<title>اختبار الإتقان | منصة جسر</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#0a1428;
+    --gold:#c5a059;
+    --gold-l:#e8cf95;
+    --gold-d:#a8843c;
+    --text:#eef3ff;
+    --muted:#9fb0cc;
+    --green:#1f9d55;
+    --red:#d63b3b;
+  }
+
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  html, body{
+    margin:0;
+    padding:0;
+    touch-action:manipulation;
+  }
+
+  body{
+    font-family:'Tajawal', system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+    background:
+      radial-gradient(1100px 600px at 50% -12%, #16305c 0%, #0a1428 55%, #060d1a 100%);
+    background-attachment:fixed;
+    color:var(--text);
+    min-height:100vh;
+    min-height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:22px 14px calc(22px + env(safe-area-inset-bottom));
+    line-height:1.6;
+  }
+
+  .wrap{ width:100%; max-width:720px; margin:0 auto; }
+  .hide{ display:none !important; }
+
+  /* ==================== البطاقة ==================== */
+  .card{
+    background:linear-gradient(160deg, rgba(24,42,76,.94), rgba(11,21,40,.97));
+    border:1px solid rgba(197,160,89,.35);
+    border-radius:22px;
+    padding:28px 22px;
+    box-shadow:0 26px 64px rgba(0,0,0,.58), inset 0 1px 0 rgba(255,255,255,.06);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+  }
+
+  .ayk{
+    font-family:sans-serif;
+    font-weight:900;
+    font-size:2rem;
+    color:#c5a059;
+    letter-spacing:-2px;
+    text-shadow:2px 2px 0 #b38b4d, 4px 4px 5px rgba(0,0,0,0.3);
+    transform:skewX(-5deg);
+    display:inline-block;
+  }
+
+  .brand{ text-align:center; margin-bottom:10px; }
+
+  .h1{
+    text-align:center;
+    font-size:clamp(1.35rem, 5vw, 1.85rem);
+    font-weight:900;
+    margin:0 0 6px;
+    background:linear-gradient(135deg,#f4e3bd,#c5a059 55%,#a8843c);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .sub{
+    text-align:center;
+    color:var(--muted);
+    font-size:.95rem;
+    margin:0 0 20px;
+    font-weight:500;
+  }
+
+  .meta-row{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-bottom:22px;
+  }
+
+  .chip{
+    font-size:.8rem;
+    font-weight:700;
+    color:var(--gold-l);
+    background:rgba(197,160,89,.12);
+    border:1px solid rgba(197,160,89,.3);
+    padding:6px 14px;
+    border-radius:999px;
+  }
+
+  /* ==================== الإدخال ==================== */
+  .label{
+    display:block;
+    font-size:.92rem;
+    font-weight:700;
+    color:var(--gold-l);
+    margin-bottom:8px;
+  }
+
+  .input{
+    width:100%;
+    font-family:inherit;
+    font-size:16px;            /* منع التكبير التلقائي في iOS */
+    font-weight:700;
+    color:var(--text);
+    background:rgba(255,255,255,.05);
+    border:1.5px solid rgba(255,255,255,.14);
+    border-radius:14px;
+    padding:15px 16px;
+    outline:none;
+    transition:border-color .2s, box-shadow .2s, background .2s;
+    touch-action:manipulation;
+  }
+  .input::placeholder{ color:#6f819c; font-weight:500; }
+  .input:focus{
+    border-color:var(--gold);
+    background:rgba(255,255,255,.08);
+    box-shadow:0 0 0 4px rgba(197,160,89,.15);
+  }
+
+  .err{
+    margin-top:10px;
+    font-size:.87rem;
+    font-weight:700;
+    color:#ff9b9b;
+    background:rgba(214,59,59,.12);
+    border:1px solid rgba(224,101,101,.4);
+    border-radius:12px;
+    padding:10px 14px;
+    animation:fadeUp .25s ease both;
+  }
+
+  @keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-7px); }
+    40%{ transform:translateX(7px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(5px); }
+  }
+  .shake{ animation:shake .45s ease; border-color:#e06565 !important; }
+
+  @keyframes fadeUp{
+    from{ opacity:0; transform:translateY(12px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
+
+  /* ==================== الأزرار ==================== */
+  .btn{
+    width:100%;
+    border:none;
+    border-radius:14px;
+    padding:15px 18px;
+    font-family:inherit;
+    font-size:1.02rem;
+    font-weight:900;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:transform .15s ease, box-shadow .2s ease, filter .2s ease, background .2s;
+    margin-top:16px;
+  }
+  .btn:active{ transform:scale(.98); }
+
+  .btn.primary{
+    background:linear-gradient(135deg,#f0dcaa,#c5a059 45%,#a8843c);
+    color:#1d1507;
+    box-shadow:0 12px 26px rgba(197,160,89,.28);
+  }
+  .btn.primary:hover{ filter:brightness(1.06); }
+
+  .btn.ghost{
+    background:transparent;
+    color:var(--gold-l);
+    border:1.5px solid rgba(197,160,89,.5);
+    box-shadow:none;
+  }
+  .btn.ghost:hover{ background:rgba(197,160,89,.1); }
+
+  .hint{
+    text-align:center;
+    color:var(--muted);
+    font-size:.82rem;
+    margin:14px 0 0;
+    line-height:1.7;
+  }
+
+  /* ==================== الاختبار ==================== */
+  .qhead{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    margin-bottom:12px;
+  }
+
+  .pill{
+    font-size:.8rem;
+    font-weight:800;
+    padding:6px 14px;
+    border-radius:999px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.12);
+    color:#cfdcf1;
+    white-space:nowrap;
+  }
+  .pill.gold{
+    color:#20170a;
+    background:linear-gradient(135deg,#e8cf95,#c5a059);
+    border-color:transparent;
+  }
+
+  .progress{
+    height:8px;
+    border-radius:999px;
+    background:rgba(255,255,255,.08);
+    overflow:hidden;
+    margin-bottom:22px;
+  }
+  .bar{
+    height:100%;
+    width:0%;
+    border-radius:999px;
+    background:linear-gradient(90deg,#c5a059,#f0dcaa);
+    transition:width .45s cubic-bezier(.4,0,.2,1);
+    box-shadow:0 0 12px rgba(197,160,89,.55);
+  }
+
+  .qtext{
+    font-size:clamp(1.05rem,4vw,1.3rem);
+    font-weight:800;
+    line-height:1.85;
+    margin:0 0 20px;
+    color:#fff;
+    animation:fadeUp .3s ease both;
+  }
+
+  .options{ display:flex; flex-direction:column; gap:11px; }
+  .options.done .opt{ pointer-events:none; }
+  .options.done .opt:not(.correct):not(.wrong){ opacity:.5; }
+
+  .opt{
+    display:flex;
+    align-items:center;
+    gap:13px;
+    width:100%;
+    text-align:right;
+    background:rgba(255,255,255,.045);
+    border:1.5px solid rgba(255,255,255,.11);
+    color:var(--text);
+    border-radius:14px;
+    padding:14px 15px;
+    font-family:inherit;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    touch-action:manipulation;
+    transition:background .2s, border-color .2s, transform .15s, box-shadow .2s;
+    animation:fadeUp .3s ease both;
+  }
+  .opt:nth-child(1){ animation-delay:.03s; }
+  .opt:nth-child(2){ animation-delay:.08s; }
+  .opt:nth-child(3){ animation-delay:.13s; }
+  .opt:nth-child(4){ animation-delay:.18s; }
+  .opt:nth-child(5){ animation-delay:.23s; }
+
+  .opt:hover{
+    background:rgba(255,255,255,.09);
+    border-color:rgba(197,160,89,.55);
+  }
+  .opt:active{ transform:scale(.99); }
+
+  .opt .badge{
+    flex:0 0 34px;
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    display:grid;
+    place-items:center;
+    background:rgba(197,160,89,.16);
+    color:var(--gold-l);
+    font-weight:900;
+    font-size:.95rem;
+    border:1px solid rgba(197,160,89,.32);
+    transition:.2s;
+  }
+
+  .opt.correct{
+    background:linear-gradient(135deg, rgba(31,157,85,.92), rgba(20,116,62,.92));
+    border-color:#2fbe74;
+    box-shadow:0 8px 22px rgba(31,157,85,.28);
+  }
+  .opt.correct .badge{
+    background:rgba(255,255,255,.28);
+    color:#fff;
+    border-color:transparent;
+  }
+
+  .opt.wrong{
+    background:linear-gradient(135deg, rgba(214,59,59,.92), rgba(155,30,30,.92));
+    border-color:#e06565;
+    box-shadow:0 8px 22px rgba(214,59,59,.26);
+  }
+  .opt.wrong .badge{
+    background:rgba(255,255,255,.28);
+    color:#fff;
+    border-color:transparent;
+  }
+
+  /* ==================== التغذية الراجعة ==================== */
+  .feedback{
+    margin-top:16px;
+    border-radius:14px;
+    padding:15px 16px;
+    border:1.5px solid;
+    animation:fadeUp .28s ease both;
+  }
+  .feedback.ok{
+    background:rgba(31,157,85,.13);
+    border-color:rgba(47,190,116,.55);
+  }
+  .feedback.no{
+    background:rgba(214,59,59,.13);
+    border-color:rgba(224,101,101,.55);
+  }
+  .fb-title{
+    font-weight:900;
+    font-size:.98rem;
+    margin-bottom:6px;
+  }
+  .feedback.ok .fb-title{ color:#5ee39b; }
+  .feedback.no .fb-title{ color:#ff9b9b; }
+  .fb-text{
+    font-size:.93rem;
+    font-weight:500;
+    line-height:1.85;
+    color:#d7e2f5;
+  }
+
+  /* ==================== النتيجة ==================== */
+  .res-icon{
+    text-align:center;
+    font-size:3rem;
+    margin-bottom:8px;
+  }
+
+  /* ==================== الشهادة ==================== */
+  .cert{
+    background:#fffdf7;
+    color:#1b2436;
+    border-radius:16px;
+    padding:10px;
+    box-shadow:0 30px 70px rgba(0,0,0,.6);
+    animation:fadeUp .45s ease both;
+  }
+
+  .cert-inner{
+    position:relative;
+    border:2px solid #c5a059;
+    border-radius:10px;
+    padding:26px 18px 18px;
+    background:
+      radial-gradient(circle at 50% -8%, rgba(197,160,89,.18), transparent 62%),
+      #fffdf7;
+    overflow:hidden;
+  }
+  .cert-inner::after{
+    content:"";
+    position:absolute;
+    inset:7px;
+    border:1px solid rgba(197,160,89,.45);
+    border-radius:6px;
+    pointer-events:none;
+  }
+
+  .cert-head{
+    text-align:center;
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-divider{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin:12px 4px 16px;
+  }
+  .cert-divider::before,
+  .cert-divider::after{
+    content:"";
+    flex:1;
+    height:1px;
+    background:linear-gradient(90deg,transparent,#c5a059,transparent);
+  }
+  .cert-divider span{
+    color:#c5a059;
+    font-size:.8rem;
+    letter-spacing:2px;
+  }
+
+  .cert-title{
+    text-align:center;
+    font-size:clamp(1.35rem,5vw,1.95rem);
+    font-weight:900;
+    margin:0 0 16px;
+    color:#a8843c;
+    letter-spacing:.5px;
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-body{
+    text-align:center;
+    font-size:clamp(.92rem,3.4vw,1.08rem);
+    font-weight:500;
+    line-height:2.1;
+    color:#2a3550;
+    margin:0 0 16px;
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-name{
+    font-weight:900;
+    color:#8a6a26;
+    padding:0 8px;
+    background:linear-gradient(transparent 62%, rgba(197,160,89,.35) 62%);
+    display:inline-block;
+  }
+
+  .cert-quote{
+    text-align:center;
+    font-weight:700;
+    color:#6b5a2e;
+    font-size:clamp(.84rem,3vw,.97rem);
+    line-height:1.95;
+    margin:0 auto 22px;
+    max-width:560px;
+    padding:12px 10px;
+    border-top:1px dashed rgba(197,160,89,.65);
+    border-bottom:1px dashed rgba(197,160,89,.65);
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-foot{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    margin:0 8px 16px;
+    position:relative;
+    z-index:2;
+  }
+
+  .sign{
+    text-align:center;
+    flex:1 1 auto;
+  }
+  .sign-name{
+    font-weight:900;
+    font-size:clamp(.95rem,3.4vw,1.1rem);
+    color:#1b2436;
+    letter-spacing:.3px;
+  }
+
+  .stamp{
+    flex:0 0 auto;
+    width:clamp(84px,24vw,106px);
+    aspect-ratio:1 / 1;
+    border-radius:50%;
+    border:2px solid #1f4e79;
+    color:#1f4e79;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    transform:rotate(-9deg);
+    opacity:.92;
+    position:relative;
+  }
+  .stamp::before{
+    content:"";
+    position:absolute;
+    inset:5px;
+    border-radius:50%;
+    border:1px dashed #1f4e79;
+    opacity:.65;
+  }
+  .stamp-top{
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:1.5px;
+    margin-bottom:2px;
+    opacity:.9;
+  }
+  .stamp-line{
+    width:46%;
+    height:1.5px;
+    background:currentColor;
+    opacity:.65;
+    margin:3px 0;
+    border-radius:2px;
+  }
+  .stamp-mid{
+    font-size:clamp(.9rem,3vw,1.08rem);
+    font-weight:900;
+  }
+
+  .cert-note{
+    margin:0 6px;
+    background:rgba(197,160,89,.13);
+    border:1px dashed rgba(168,132,60,.55);
+    border-radius:10px;
+    padding:11px 13px;
+    font-size:clamp(.78rem,2.8vw,.88rem);
+    font-weight:700;
+    color:#6b5a2e;
+    text-align:center;
+    line-height:1.8;
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-rights{
+    margin-top:12px;
+    text-align:center;
+    font-size:.68rem;
+    color:#9aa4b5;
+    letter-spacing:.3px;
+    position:relative;
+    z-index:2;
+  }
+
+  .cert-actions{
+    display:flex;
+    gap:10px;
+    margin-top:16px;
+  }
+  .cert-actions .btn{ margin-top:0; }
+
+  /* ==================== الطباعة ==================== */
+  @media print{
+    @page{ size:A4 portrait; margin:10mm; }
+    body{
+      background:#fff !important;
+      padding:0 !important;
+      display:block !important;
+    }
+    .no-print{ display:none !important; }
+    .wrap{ max-width:100%; }
+    .cert{
+      box-shadow:none !important;
+      border-radius:0;
+      padding:0;
+      animation:none;
+    }
+    .cert-inner{ background:#fffdf7; }
+  }
+
+  @media (max-width:420px){
+    .card{ padding:22px 16px; border-radius:18px; }
+    .cert-inner{ padding:22px 12px 14px; }
+    .cert-foot{ margin:0 2px 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ======================= شاشة البداية ======================= -->
+  <section class="screen" id="screen-start">
+    <div class="card">
+      <div class="brand">
+        <div class="ayk">AYK</div>
+      </div>
+
+      <h1 class="h1">اختبار الإتقان</h1>
+      <p class="sub">الفيزياء · أسئلة اختيار من متعدد</p>
+
+      <div class="meta-row">
+        <span class="chip">5 أسئلة</span>
+        <span class="chip">تغذية راجعة فورية</span>
+        <span class="chip">شهادة عند 100%</span>
+      </div>
+
+      <label class="label" for="nameInput">الاسم الثلاثي للطالب / ة</label>
+      <input
+        id="nameInput"
+        class="input"
+        type="text"
+        placeholder="مثال: محمد أحمد العلي"
+        autocomplete="off"
+        autocapitalize="off"
+        spellcheck="false"
+        maxlength="60"
+        inputmode="text">
+
+      <div class="err hide" id="nameErr"></div>
+
+      <button class="btn primary" id="startBtn" type="button">بدء الاختبار</button>
+
+      <p class="hint">
+        يجب كتابة الاسم الثلاثي إجبارياً قبل البدء.<br>
+        لا يمكن العودة إلى سؤال سابق بعد الإجابة عنه.
+      </p>
+    </div>
+  </section>
+
+  <!-- ======================= شاشة الاختبار ======================= -->
+  <section class="screen hide" id="screen-quiz">
+    <div class="card">
+      <div class="qhead">
+        <span class="pill" id="qCounter">السؤال 1 من 5</span>
+        <span class="pill gold" id="scorePill">0</span>
+      </div>
+
+      <div class="progress"><div class="bar" id="bar"></div></div>
+
+      <h2 class="qtext" id="qText"></h2>
+
+      <div class="options" id="options"></div>
+
+      <div class="feedback hide" id="feedback">
+        <div class="fb-title" id="fbTitle"></div>
+        <div class="fb-text" id="fbText"></div>
+      </div>
+
+      <button class="btn primary hide" id="nextBtn" type="button">السؤال التالي</button>
+    </div>
+  </section>
+
+  <!-- ======================= شاشة النتيجة ======================= -->
+  <section class="screen hide" id="screen-result">
+    <div class="card">
+      <div class="res-icon">📘</div>
+      <h1 class="h1">لم تتحقق درجة الإتقان</h1>
+      <p class="sub">نتيجتك: <strong id="resScore" style="color:#e8cf95;font-weight:900;">0%</strong></p>
+      <p class="hint">
+        شهادة الإتقان تُمنح فقط عند الحصول على 100%.<br>
+        راجع الشرح المرفق مع كل سؤال ثم أعد المحاولة.
+      </p>
+      <button class="btn primary" id="retryBtn" type="button">إعادة المحاولة</button>
+    </div>
+  </section>
+
+  <!-- ======================= شاشة الشهادة ======================= -->
+  <section class="screen hide" id="screen-cert">
+    <div class="cert" id="cert">
+      <div class="cert-inner">
+
+        <!-- الترويسة: لوجو المنصة النصي ثلاثي الأبعاد فقط -->
+        <div class="cert-head">
+          <div class="ayk">AYK</div>
+        </div>
+
+        <div class="cert-divider"><span>❖</span></div>
+
+        <h2 class="cert-title">شهادة إتقان</h2>
+
+        <p class="cert-body">
+          تشهد الشعبة في المدرسة أن الطالب/ة:
+          <span class="cert-name" id="certName"></span>
+          قد أتم بنجاح وبدرجة كاملة (100%) متطلبات الإتقان في مادة المادة لـ الفترة.
+        </p>
+
+        <p class="cert-quote">
+          لأن الإتقان غاية... والتميز رحلة. شهادة استحقها بعد إثبات جدارته العلمية.
+        </p>
+
+        <div class="cert-foot">
+          <!-- اليمين: توقيع المعلم -->
+          <div class="sign">
+            <span class="sign-name">معلم جسر</span>
+          </div>
+
+          <!-- اليسار: الختم الدائري -->
+          <div class="stamp">
+            <span class="stamp-top">المدرسة</span>
+            <span class="stamp-line"></span>
+            <span class="stamp-mid">الشعبة</span>
+          </div>
+        </div>
+
+        <div class="cert-note">
+          📸 احتفظ بلقطة شاشة (Screenshot) لهذه الشهادة وأرسلها لمعلمك لاحتساب درجة المشاركة.
+        </div>
+
+        <div class="cert-rights">صادرة عبر منصة جسر | إشراف: معلم جسر</div>
+
+      </div>
+    </div>
+
+    <div class="cert-actions no-print">
+      <button class="btn ghost" type="button" onclick="window.print()">🖨️ طباعة / حفظ PDF</button>
+      <button class="btn primary" id="againBtn" type="button">إعادة الاختبار</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ================== بنك الأسئلة ================== */
+  const QUESTIONS = [
+    {
+      text: 'ما هي وحدة قياس القوة في النظام الدولي؟',
+      options: ['الجول', 'النيوتن', 'الواط', 'الباسكال'],
+      correct: 1,
+      explain: 'النيوتن (N) هو وحدة قياس القوة، سُميت تكريماً للعالم إسحاق نيوتن.'
+    },
+    {
+      text: 'القانون الذي ينص على أن "لكل فعل رد فعل مساوٍ له في المقدار ومضاد له في الاتجاه" هو:',
+      options: ['قانون نيوتن الأول', 'قانون نيوتن الثاني', 'قانون نيوتن الثالث', 'قانون الجذب العام'],
+      correct: 2,
+      explain: 'قانون نيوتن الثالث يوضح العلاقة بين القوتين المتبادلتين بين جسمين.'
+    },
+    {
+      text: 'إذا قطع جسم مسافة 100 متر في زمن قدره 20 ثانية، فما هي سرعته المتوسطة؟',
+      options: ['2 م/ث', '5 م/ث', '10 م/ث', '20 م/ث'],
+      correct: 1,
+      explain: 'السرعة المتوسطة = المسافة ÷ الزمن، إذن 100 ÷ 20 = 5 متر لكل ثانية.'
+    },
+    {
+      text: 'الطاقة التي يمتلكها الجسم بسبب حركته تسمى:',
+      options: ['طاقة الوضع', 'الطاقة الحركية', 'الطاقة الحرارية', 'طاقة الوضع المرونية'],
+      correct: 1,
+      explain: 'الطاقة الحركية (Kinetic Energy) تعتمد على كتلة الجسم ومربع سرعته.'
+    },
+    {
+      text: 'ما هو تسارع الجاذبية الأرضية التقريبي عند سطح البحر؟',
+      options: ['5.8 م/ث²', '8.9 م/ث²', '9.8 م/ث²', '10.8 م/ث²'],
+      correct: 2,
+      explain: 'يبلغ تسارع الجاذبية الأرضية (g) حوالي 9.8 متر لكل ثانية تربيع.'
+    }
+  ];
+
+  /* ================== أدوات مساعدة ================== */
+  const $ = (id) => document.getElementById(id);
+  const LETTERS = ['أ', 'ب', 'ج', 'د', 'هـ'];
+
+  function shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function buildQuiz() {
+    return shuffle(QUESTIONS).map(function (q) {
+      const opts = q.options.map(function (t, i) {
+        return { text: t, correct: i === q.correct };
+      });
+      return { text: q.text, explain: q.explain, options: shuffle(opts) };
+    });
+  }
+
+  /* ================== الحالة ================== */
+  let quiz = [];
+  let idx = 0;
+  let score = 0;
+  let answered = false;
+  let studentName = '';
+
+  const SCREENS = ['screen-start', 'screen-quiz', 'screen-result', 'screen-cert'];
+
+  function showScreen(id) {
+    SCREENS.forEach(function (s) { $(s).classList.add('hide'); });
+    $(id).classList.remove('hide');
+    window.scrollTo(0, 0);
+  }
+
+  /* ================== التحقق من الاسم ================== */
+  function validateName(raw) {
+    const v = String(raw || '').trim().replace(/\s+/g, ' ');
+
+    if (!v) {
+      return { ok: false, msg: 'يرجى كتابة الاسم الثلاثي قبل البدء.' };
+    }
+
+    const parts = v.split(' ').filter(Boolean);
+
+    if (parts.length < 3) {
+      return { ok: false, msg: 'الاسم يجب أن يكون ثلاثياً (ثلاث كلمات على الأقل).' };
+    }
+    if (parts.some(function (p) { return p.length < 2; })) {
+      return { ok: false, msg: 'تأكد من كتابة كل جزء من الاسم بشكل صحيح.' };
+    }
+    if (!/^[\u0600-\u06FF\u0750-\u077F\s]+$/.test(v)) {
+      return { ok: false, msg: 'يُرجى كتابة الاسم بالحروف العربية فقط.' };
+    }
+
+    return { ok: true, value: v };
+  }
+
+  /* ================== بدء الاختبار ================== */
+  function startQuiz() {
+    const res = validateName($('nameInput').value);
+    const err = $('nameErr');
+    const input = $('nameInput');
+
+    if (!res.ok) {
+      err.textContent = res.msg;
+      err.classList.remove('hide');
+      input.classList.add('shake');
+      setTimeout(function () { input.classList.remove('shake'); }, 470);
+      input.focus();
+      return;
+    }
+
+    err.classList.add('hide');
+    studentName = res.value;
+
+    quiz = buildQuiz();
+    idx = 0;
+    score = 0;
+
+    showScreen('screen-quiz');
+    renderQuestion();
+  }
+
+  /* ================== عرض السؤال ================== */
+  function renderQuestion() {
+    answered = false;
+
+    const item = quiz[idx];
+
+    $('qCounter').textContent = 'السؤال ' + (idx + 1) + ' من ' + quiz.length;
+    $('scorePill').textContent = 'النقاط: ' + score;
+    $('bar').style.width = ((idx / quiz.length) * 100) + '%';
+
+    const qt = $('qText');
+    qt.textContent = item.text;
+    qt.style.animation = 'none';
+    void qt.offsetHeight;
+    qt.style.animation = '';
+
+    const box = $('options');
+    box.className = 'options';
+    box.innerHTML = '';
+
+    item.options.forEach(function (opt, i) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'opt';
+
+      const badge = document.createElement('span');
+      badge.className = 'badge';
+      badge.textContent = LETTERS[i] || (i + 1);
+
+      const txt = document.createElement('span');
+      txt.className = 'opt-txt';
+      txt.textContent = opt.text;
+
+      btn.appendChild(badge);
+      btn.appendChild(txt);
+      btn.addEventListener('click', function () { selectOption(btn, opt, item); });
+
+      box.appendChild(btn);
+    });
+
+    $('feedback').className = 'feedback hide';
+    $('fbTitle').textContent = '';
+    $('fbText').textContent = '';
+    $('nextBtn').classList.add('hide');
+  }
+
+  /* ================== اختيار إجابة ================== */
+  function selectOption(btn, opt, item) {
+    if (answered) return;
+    answered = true;
+
+    const box = $('options');
+    const buttons = Array.prototype.slice.call(box.children);
+
+    box.classList.add('done');
+
+    buttons.forEach(function (b, i) {
+      if (item.options[i].correct) b.classList.add('correct');
+    });
+
+    if (opt.correct) {
+      score += 1;
+    } else {
+      btn.classList.add('wrong');
+    }
+
+    $('scorePill').textContent = 'النقاط: ' + score;
+    $('bar').style.width = (((idx + 1) / quiz.length) * 100) + '%';
+
+    const fb = $('feedback');
+    fb.className = 'feedback ' + (opt.correct ? 'ok' : 'no');
+
+    $('fbTitle').textContent = opt.correct ? '✅ إجابة صحيحة' : '❌ إجابة غير صحيحة';
+    $('fbText').textContent = item.explain;
+
+    const next = $('nextBtn');
+    next.textContent = (idx === quiz.length - 1) ? 'عرض النتيجة' : 'السؤال التالي';
+    next.classList.remove('hide');
+
+    setTimeout(function () {
+      fb.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }, 80);
+  }
+
+  /* ================== الانتقال ================== */
+  function goNext() {
+    idx += 1;
+    if (idx >= quiz.length) {
+      finish();
+    } else {
+      renderQuestion();
+    }
+  }
+
+  function finish() {
+    const percent = Math.round((score / quiz.length) * 100);
+    if (percent === 100) {
+      showCertificate();
+    } else {
+      $('resScore').textContent = percent + '%';
+      showScreen('screen-result');
+    }
+  }
+
+  /* ================== الشهادة ================== */
+  function showCertificate() {
+    $('certName').textContent = studentName;
+    showScreen('screen-cert');
+  }
+
+  /* ================== الأحداث ================== */
+  $('startBtn').addEventListener('click', startQuiz);
+
+  $('nameInput').addEventListener('input', function () {
+    if (!$('nameErr').classList.contains('hide')) {
+      $('nameErr').classList.add('hide');
+    }
+  });
+
+  $('nameInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      startQuiz();
+    }
+  });
+
+  $('nextBtn').addEventListener('click', goNext);
+
+  $('retryBtn').addEventListener('click', function () {
+    quiz = buildQuiz();
+    idx = 0;
+    score = 0;
+    showScreen('screen-quiz');
+    renderQuestion();
+  });
+
+  $('againBtn').addEventListener('click', function () {
+    quiz = buildQuiz();
+    idx = 0;
+    score = 0;
+    showScreen('screen-quiz');
+    renderQuestion();
+  });
+
+  /* منع الرجوع للخلف أثناء الاختبار (لا يمكن العودة لسؤال سابق) */
+  window.addEventListener('popstate', function () {
+    history.pushState(null, '', location.href);
+  });
+  history.pushState(null, '', location.href);
+
+})();
+</script>
+</body>
+</html>
